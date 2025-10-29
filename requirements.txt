@@ -3,3 +3,4 @@ kagglehub
 numpy
 setuptools
 ydata-profiling
+scikit-learn
