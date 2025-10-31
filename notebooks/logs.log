@@ -1,0 +1,33 @@
+2025-10-31 11:39:23,143:WARNING:C:\Users\Fernando Estrada\AppData\Roaming\Python\Python312\site-packages\sklearn\impute\_base.py:577: UserWarning: Skipping features without any observed values: ['sugar_intake']. At least one non-missing value is needed for imputation with strategy='median'.
+  warnings.warn(
+
+2025-10-31 11:39:23,162:WARNING:C:\Users\Fernando Estrada\AppData\Roaming\Python\Python312\site-packages\xgboost\training.py:199: UserWarning: [11:39:23] WARNING: C:\actions-runner\_work\xgboost\xgboost\src\learner.cc:790: 
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-10-31 11:39:23,226:WARNING:C:\Users\Fernando Estrada\AppData\Roaming\Python\Python312\site-packages\sklearn\impute\_base.py:577: UserWarning: Skipping features without any observed values: ['sugar_intake']. At least one non-missing value is needed for imputation with strategy='median'.
+  warnings.warn(
+
+2025-10-31 11:42:02,773:WARNING:C:\Users\Fernando Estrada\AppData\Roaming\Python\Python312\site-packages\sklearn\impute\_base.py:577: UserWarning: Skipping features without any observed values: ['sugar_intake']. At least one non-missing value is needed for imputation with strategy='median'.
+  warnings.warn(
+
+2025-10-31 11:42:02,783:WARNING:C:\Users\Fernando Estrada\AppData\Roaming\Python\Python312\site-packages\xgboost\training.py:199: UserWarning: [11:42:02] WARNING: C:\actions-runner\_work\xgboost\xgboost\src\learner.cc:790: 
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-10-31 11:42:02,899:WARNING:C:\Users\Fernando Estrada\AppData\Roaming\Python\Python312\site-packages\sklearn\impute\_base.py:577: UserWarning: Skipping features without any observed values: ['sugar_intake']. At least one non-missing value is needed for imputation with strategy='median'.
+  warnings.warn(
+
+2025-10-31 11:49:44,428:WARNING:C:\Users\Fernando Estrada\AppData\Roaming\Python\Python312\site-packages\sklearn\impute\_base.py:577: UserWarning: Skipping features without any observed values: ['sugar_intake']. At least one non-missing value is needed for imputation with strategy='median'.
+  warnings.warn(
+
+2025-10-31 11:49:44,441:WARNING:C:\Users\Fernando Estrada\AppData\Roaming\Python\Python312\site-packages\xgboost\training.py:199: UserWarning: [11:49:44] WARNING: C:\actions-runner\_work\xgboost\xgboost\src\learner.cc:790: 
+Parameters: { "use_label_encoder" } are not used.
+
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-10-31 11:49:44,602:WARNING:C:\Users\Fernando Estrada\AppData\Roaming\Python\Python312\site-packages\sklearn\impute\_base.py:577: UserWarning: Skipping features without any observed values: ['sugar_intake']. At least one non-missing value is needed for imputation with strategy='median'.
+  warnings.warn(
+
