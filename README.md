@@ -112,33 +112,34 @@ curl -X POST "http://localhost:8000/predecir" \
   }'
 ```
 
-## Estructura del proyecto
+
+## Estructura del Proyecto
 
 data-labs-proyecto/
-│
-├── .venv/                      # Entorno virtual de Python para aislar dependencias del proyecto
-├── api/                        # API FastAPI para hacer predicciones
-│   ├── main.py                     # Aplicacion FastAPI principal
-│   ├── test_api.py                 # Script de pruebas automatizadas
-│   ├── config.py                   # Configuracion de la API
-│   ├── requirements_api.txt        # Dependencias minimas para la API
-│   └── README.md                   # Documentacion detallada de la API
-├── datos/                      # Carpeta para almacenar datos usados o generados por el proyecto
-├── models/                     # Carpeta para guardar los modelos machine learning entrenados o sus configuraciones
-├── notebooks/                  # Carpeta de notebooks para análisis y experimentación interactiva
-│   ├── 01_datos.ipynb              # Notebook de exploración inicial de los datos
-│   ├── 02_Exploracion_datos.ipynb  # Notebook de exploración y análisis de datos (parte 1)
-│   ├── 02_Exploracion_datos2.ipynb # Continuación del análisis exploratorio (parte 2)
-│   ├── 03_AutoML_PyCaret.ipynb     # Notebook para experimentos AutoML usando PyCaret
-│   └── Informe_Final_Salud.html    # Informe en formato HTML, posiblemente exportado de un notebook
-├── logs.log                    # Archivo de logs con registros de la ejecución del proyecto
-├── .gitignore                  # Archivo para ignorar archivos y carpetas en el control de versiones Git
-├── .python-version             # Archivo que especifica la versión de Python usada para el proyecto
-├── main.py                     # Script principal de Python para ejecutar la lógica central del proyecto
-├── pyproject.toml              # Archivo de configuración de dependencias y herramientas de Python
-├── README.md                   # Documentación principal del proyecto, explica objetivos, uso, etc.
-├── QUICK_START_API.md          # Guía rápida para usar la API
-└── requirements.txt            # Lista de dependencias Python necesarias para el entorno del proyecto
+├── .venv/ # Entorno virtual de Python para aislar dependencias del proyecto
+├── api/ # API FastAPI para hacer predicciones
+│ ├── main.py # Aplicación FastAPI principal
+│ ├── test_api.py # Script de pruebas automatizadas de la API
+│ ├── config.py # Configuración general de la API
+│ ├── requirements_api.txt # Dependencias mínimas para la API
+│ └── README.md # Documentación detallada de la API
+├── datos/ # Carpeta para los datos fuente y generados
+├── models/ # Modelos de Machine Learning entrenados y configuraciones
+├── notebooks/ # Jupyter Notebooks para análisis y experimentación interactiva
+│ ├── 01_datos.ipynb # Exploración inicial de los datos
+│ ├── 02_Exploracion_datos.ipynb # Análisis exploratorio (parte 1)
+│ ├── 02_Exploracion_datos2.ipynb # Análisis exploratorio (parte 2)
+│ ├── 03_AutoML_PyCaret.ipynb # Experimentos de AutoML con PyCaret
+│ └── Informe_Final_Salud.html # Informe final exportado en HTML
+├── logs.log # Registro de eventos y errores del proyecto
+├── .gitignore # Exclusiones para control de versiones con Git
+├── .python-version # Versión de Python recomendada para el proyecto
+├── main.py # Script principal para la lógica central del proyecto
+├── pyproject.toml # Configuración de dependencias y herramientas Python
+├── README.md # Documentación principal del proyecto
+├── QUICK_START_API.md # Guía rápida de inicio para la API
+└── requirements.txt # Lista de dependencias Python del entorno principal
+
 
 
 ## Dependencias principales
@@ -182,8 +183,13 @@ deactivate
 python main.py
 ```
 
-## Autor
+## Autores
 
+- Edgar Fernando Estrada Arteaga 
+
+- Juan Manuel Sierra Arcila
+
+- Juan Diego Castaño Ceballos
 
 
 ## Licencia
