@@ -4,6 +4,7 @@ Utiliza el mejor modelo entrenado (sk_auto_best_tuned.joblib)
 """
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import Optional
 import joblib
@@ -17,6 +18,15 @@ app = FastAPI(
     title="Predictor de Riesgo de Salud",
     description="API para predecir el nivel de riesgo de salud basado en datos personales y de estilo de vida",
     version="1.0.0"
+)
+
+# Configurar CORS para permitir solicitudes desde cualquier origen
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permitir todos los orígenes
+    allow_credentials=True,
+    allow_methods=["*"],  # Permitir todos los métodos HTTP
+    allow_headers=["*"],  # Permitir todos los headers
 )
 
 # Cargar el modelo entrenado
