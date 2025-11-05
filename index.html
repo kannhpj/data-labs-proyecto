@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictor de Riesgo de Salud</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #333;
+            border-radius: 5px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        input[type="number"]::placeholder,
+        input[type="text"]::placeholder {
+            color: #999;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 3px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-predict {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-predict:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-predict:active {
+            transform: translateY(0);
+        }
+
+        .btn-reset {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #e0e0e0;
+        }
+
+        .btn-reset:hover {
+            background: #e8e8e8;
+        }
+
+        .btn-predict:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .result-container.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-container.success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+        }
+
+        .result-container.error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+        }
+
+        .result-title {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .result-container.success .result-title {
+            color: #155724;
+        }
+
+        .result-container.error .result-title {
+            color: #721c24;
+        }
+
+        .result-item {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .result-container.success .result-item {
+            color: #155724;
+        }
+
+        .result-container.error .result-item {
+            color: #721c24;
+        }
+
+        .result-item strong {
+            font-weight: 600;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .risk-high {
+            background: #dc3545;
+            color: white;
+        }
+
+        .risk-low {
+            background: #28a745;
+            color: white;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .api-status {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .api-status.connected {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .api-status.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .api-status.connected .status-indicator {
+            background: #28a745;
+        }
+
+        .api-status.disconnected .status-indicator {
+            background: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 Predictor de Riesgo de Salud</h1>
+        <p class="subtitle">Ingresa tus datos para obtener una predicción personalizada</p>
+
+        <div id="apiStatus" class="api-status disconnected">
+            <span class="status-indicator"></span>
+            <span id="statusText">Verificando API...</span>
+        </div>
+
+        <form id="healthForm">
+            <!-- Información Personal -->
+            <div class="form-section">
+                <div class="section-title">📋 Información Personal</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="age">Edad</label>
+                        <input type="number" id="age" name="age" min="18" max="100" required placeholder="25">
+                        <span class="hint">18 - 100 años</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">Peso (kg)</label>
+                        <input type="number" id="weight" name="weight" min="30" max="200" step="0.1" required placeholder="70">
+                        <span class="hint">30 - 200 kg</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="height">Altura (cm)</label>
+                        <input type="number" id="height" name="height" min="100" max="250" required placeholder="175">
+                        <span class="hint">100 - 250 cm</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="bmi">IMC</label>
+                        <input type="number" id="bmi" name="bmi" min="10" max="60" step="0.1" required placeholder="22.8">
+                        <span class="hint">10 - 60</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="profession">Profesión</label>
+                        <select id="profession" name="profession" required>
+                            <option value="">Selecciona una profesión</option>
+                            <option value="office_worker">Trabajador de Oficina</option>
+                            <option value="teacher">Profesor</option>
+                            <option value="artist">Artista</option>
+                            <option value="student">Estudiante</option>
+                            <option value="engineer">Ingeniero</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="salesman">Vendedor</option>
+                            <option value="nurse">Enfermero</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="married">Estado Civil</label>
+                        <select id="married" name="married" required>
+                            <option value="">Selecciona una opción</option>
+                            <option value="yes">Casado/a</option>
+                            <option value="no">Soltero/a</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estilo de Vida -->
+            <div class="form-section">
+                <div class="section-title">💪 Estilo de Vida</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sleep">Horas de Sueño</label>
+                        <input type="number" id="sleep" name="sleep" min="0" max="24" step="0.5" required placeholder="8">
+                        <span class="hint">0 - 24 horas</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="exercise">Nivel de Ejercicio</label>
+                        <select id="exercise" name="exercise" required>
+                            <option value="">Selecciona una opción</option>
+                            <option value="low">Bajo</option>
+                            <option value="medium">Medio</option>
+                            <option value="high">Alto</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sugar_intake">Consumo de Azúcar</label>
+                        <select id="sugar_intake" name="sugar_intake">
+                            <option value="medium">Medio (por defecto)</option>
+                            <option value="low">Bajo</option>
+                            <option value="high">Alto</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="smoking">¿Fuma?</label>
+                        <select id="smoking" name="smoking" required>
+                            <option value="">Selecciona una opción</option>
+                            <option value="no">No</option>
+                            <option value="yes">Sí</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="alcohol">¿Consume Alcohol?</label>
+                        <select id="alcohol" name="alcohol" required>
+                            <option value="">Selecciona una opción</option>
+                            <option value="no">No</option>
+                            <option value="yes">Sí</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="button-group">
+                <button type="submit" class="btn-predict" id="predictBtn">Obtener Predicción</button>
+                <button type="reset" class="btn-reset">Limpiar Formulario</button>
+            </div>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Procesando predicción...</p>
+        </div>
+
+        <div id="result" class="result-container"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+        const form = document.getElementById('healthForm');
+        const resultDiv = document.getElementById('result');
+        const loadingDiv = document.getElementById('loading');
+        const apiStatusDiv = document.getElementById('apiStatus');
+        const statusText = document.getElementById('statusText');
+        const predictBtn = document.getElementById('predictBtn');
+
+        // Verificar estado de la API al cargar la página
+        checkAPIStatus();
+
+        // Event listeners
+        form.addEventListener('submit', handleSubmit);
+        window.addEventListener('load', checkAPIStatus);
+
+        async function checkAPIStatus() {
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                if (response.ok) {
+                    apiStatusDiv.classList.remove('disconnected');
+                    apiStatusDiv.classList.add('connected');
+                    statusText.textContent = '✓ API conectada y funcionando correctamente';
+                    predictBtn.disabled = false;
+                } else {
+                    setAPIDisconnected();
+                }
+            } catch (error) {
+                setAPIDisconnected();
+            }
+        }
+
+        function setAPIDisconnected() {
+            apiStatusDiv.classList.remove('connected');
+            apiStatusDiv.classList.add('disconnected');
+            statusText.textContent = '✗ API no disponible. Asegúrate de ejecutar: python api/main.py';
+            predictBtn.disabled = true;
+        }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+
+            if (!predictBtn.disabled) {
+                await makePrediction();
+            }
+        }
+
+        async function makePrediction() {
+            const formData = {
+                age: parseInt(document.getElementById('age').value),
+                weight: parseInt(document.getElementById('weight').value),
+                height: parseInt(document.getElementById('height').value),
+                sleep: parseFloat(document.getElementById('sleep').value),
+                bmi: parseFloat(document.getElementById('bmi').value),
+                exercise: document.getElementById('exercise').value,
+                sugar_intake: document.getElementById('sugar_intake').value,
+                smoking: document.getElementById('smoking').value,
+                alcohol: document.getElementById('alcohol').value,
+                married: document.getElementById('married').value,
+                profession: document.getElementById('profession').value
+            };
+
+            loadingDiv.classList.add('show');
+            resultDiv.classList.remove('show');
+            predictBtn.disabled = true;
+
+            try {
+                const response = await fetch(`${API_URL}/predecir`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    displaySuccess(data);
+                } else {
+                    displayError(data.detail || 'Error en la predicción');
+                }
+            } catch (error) {
+                displayError(`Error de conexión: ${error.message}`);
+                setAPIDisconnected();
+            } finally {
+                loadingDiv.classList.remove('show');
+                predictBtn.disabled = false;
+            }
+        }
+
+        function displaySuccess(data) {
+            const riskClass = data.health_risk === 'high' ? 'risk-high' : 'risk-low';
+            const riskLabel = data.health_risk === 'high' ? 'RIESGO ALTO' : 'RIESGO BAJO';
+
+            resultDiv.innerHTML = `
+                <div class="result-title">✓ Predicción Completada</div>
+                <div class="result-item">
+                    <strong>Riesgo Predicho:</strong> ${riskLabel}
+                    <span class="risk-badge ${riskClass}">${riskLabel}</span>
+                </div>
+                <div class="result-item">
+                    <strong>Confianza:</strong> ${(data.confidence * 100).toFixed(2)}%
+                </div>
+                <div class="result-item">
+                    <strong>Interpretación:</strong> ${data.risk_level}
+                </div>
+            `;
+            resultDiv.classList.remove('error');
+            resultDiv.classList.add('success', 'show');
+        }
+
+        function displayError(message) {
+            resultDiv.innerHTML = `
+                <div class="result-title">✗ Error en la Predicción</div>
+                <div class="result-item">${message}</div>
+            `;
+            resultDiv.classList.remove('success');
+            resultDiv.classList.add('error', 'show');
+        }
+
+        // Recalcular IMC automáticamente si cambian peso o altura
+        document.getElementById('weight').addEventListener('change', calculateBMI);
+        document.getElementById('height').addEventListener('change', calculateBMI);
+
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+
+            if (weight && height && height > 0) {
+                const heightInMeters = height / 100;
+                const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(2);
+                document.getElementById('bmi').value = bmi;
+            }
+        }
+
+        // Cargar valores de ejemplo al hacer clic en el botón reset
+        document.querySelector('.btn-reset').addEventListener('click', function() {
+            setTimeout(() => {
+                document.getElementById('age').value = '45';
+                document.getElementById('weight').value = '75';
+                document.getElementById('height').value = '175';
+                document.getElementById('sleep').value = '7.5';
+                document.getElementById('exercise').value = 'medium';
+                document.getElementById('sugar_intake').value = 'medium';
+                document.getElementById('smoking').value = 'no';
+                document.getElementById('alcohol').value = 'no';
+                document.getElementById('married').value = 'yes';
+                document.getElementById('profession').value = 'office_worker';
+                calculateBMI();
+            }, 0);
+        });
+    </script>
+</body>
+</html>

@@ -112,6 +112,32 @@ curl -X POST "http://localhost:8000/predecir" \
   }'
 ```
 
+### Usar la interfaz Web (Recomendado)
+
+El proyecto incluye una **interfaz HTML interactiva** para probar el modelo de forma sencilla:
+
+**1. Inicia la API** (en una terminal):
+```bash
+cd api
+python main.py
+```
+
+**2. Abre la interfaz** en tu navegador:
+```bash
+# En Linux/Mac
+open index.html
+
+# O simplemente abre el archivo directamente desde tu navegador
+# File > Open > /ruta/al/proyecto/index.html
+```
+
+**Características de la interfaz:**
+- ✓ Formulario amigable con validación automática
+- ✓ Cálculo automático del IMC
+- ✓ Verificación del estado de la API
+- ✓ Resultados con confianza e interpretación
+- ✓ Diseño responsivo y moderno
+
 
 ## Estructura del Proyecto
 
@@ -132,6 +158,7 @@ data-labs-proyecto/
 │ ├── 03_AutoML_PyCaret.ipynb # Experimentos de AutoML con PyCaret
 │ └── Informe_Final_Salud.html # Informe final exportado en HTML
 ├── logs.log # Registro de eventos y errores del proyecto
+├── index.html # Interfaz web interactiva para probar el modelo
 ├── .gitignore # Exclusiones para control de versiones con Git
 ├── .python-version # Versión de Python recomendada para el proyecto
 ├── main.py # Script principal para la lógica central del proyecto
